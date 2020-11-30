@@ -1,6 +1,6 @@
 #!/usr/bin/zsh
 
-source bin/00-common.zsh
+source 00-common.zsh
 
 run-mysql <<EOF
    INSERT
