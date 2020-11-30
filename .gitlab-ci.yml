@@ -3,7 +3,7 @@
 #
 image: "smblott/dcu-docker-gitlab-ci"
 
-# Your instructions are in the README.md file in this directory.
+# Your instructions are in the README.txt file in this directory.
 #
 run:
    script:
