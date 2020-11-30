@@ -19,6 +19,9 @@ image: "smblott/dcu-docker-gitlab-ci"
 #   - gitlab-runner exec shell hello
 #   - gitlab-runner docker shell hello
 #
+# Also, this job will be run automatically whenever you push new
+# commits back to GitLab.
+#
 hello:
    script:
       - echo hello world
