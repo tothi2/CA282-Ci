@@ -1,0 +1,9 @@
+*.class
+*.o
+add
+
+node_modules/
+
+build/
+builds/
+dist/

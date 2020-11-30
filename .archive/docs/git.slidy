@@ -1,0 +1,1626 @@
+= Git
+Stephen Blott <stephen.blott@dcu.ie>
+:data-uri:
+:theme: smblott
+
+// //////////////////////////////////////////////////////////////
+== Information and Links
+
+.Links
+****
+- These slides: https://www.computing.dcu.ie/~sblott/git.html[]
+- Gitlab: https://gitlab.computing.dcu.ie/[]
+- This repo: https://gitlab.computing.dcu.ie/sblott/test-project-addition[]
+- TTY-cast: https://ca116.computing.dcu.ie/ttycast/[]
+****
+
+.Get ready
+****
+1. Boot into Linux.
+2. Open a terminal (e.g. `gnome-terminal`).
+3. Go to this project on GitLab (link above).
+4. Open TTYCast, link above (optional).
+****
+
+// //////////////////////////////////////////////////////////////
+== Plan
+
+****
+. I talk for a bit.
+. Then you try git for yourselves.
+****
+
+// //////////////////////////////////////////////////////////////
+== Software Projects
+
+****
+Most software projects consist of a (possibly large) collection of files, usually text files.
+****
+
+****
+For example, the source code for the Python interpreter consists of a collection of almost _four thousand_  files.
+****
+
+// //////////////////////////////////////////////////////////////
+== Software Projects
+
+****
+Most software is written by _many_ contributors.
+****
+
+****
+For example, the Python interpreter has hundreds of contributors.
+****
+
+// //////////////////////////////////////////////////////////////
+== Software Projects
+
+****
+At any point in time, developers will be working on _many_ different improvements:
+
+- new features in development
+- experimental release
+- bug fixes
+****
+
+// //////////////////////////////////////////////////////////////
+== Software Projects
+
+****
+At any point in time, developers will be working on _many_ different improvements:
+
+- new features in development
+- experimental release
+- bug fixes
+****
+
+****
+And each improvement requires changes to a _different set of files_.
+****
+
+// //////////////////////////////////////////////////////////////
+== Software Projects
+
+****
+At any point in time, developers will be working on _many_ different improvements:
+
+- new features in development
+- experimental features
+- bug fixes
+****
+
+----
+--------   --------   --------   --------   --------   --------
+|      |   |      |   |      |   |      |   |      |   |      |
+| **   |   |      |   |      |   |      |   |  *   |   |      |
+|      |   |      |   |      |   |   ** |   |      |   |      |
+|      |   |      |   |      |   |      |   |      |   |      |
+|   *  |   |      |   |      |   |      |   |      |   |  *** |
+|      |   |      |   |      |   | **** |   |      |   |      |
+--------   --------   --------   --------   --------   --------
+----
+
+// //////////////////////////////////////////////////////////////
+== Software Projects
+
+****
+At any point in time, developers will be working on _many_ different improvements:
+
+- new features in development
+- experimental features
+- bug fixes
+****
+
+----
+--------   --------   --------   --------   --------   --------
+|      |   |      |   |      |   |      |   |      |   |      |
+|      |   |      |   |      |   |      |   |      |   |      |
+|      |   | ++   |   | ++   |   |    + |   |      |   |      |
+|      |   |      |   |      |   | ++   |   |      |   |      |
+|   +  |   |      |   |      |   |      |   |      |   |      |
+|      |   |      |   |      |   |      |   |      |   |      |
+--------   --------   --------   --------   --------   --------
+----
+
+// //////////////////////////////////////////////////////////////
+== Software Projects
+
+****
+At any point in time, developers will be working on _many_ different improvements:
+
+- new features in development
+- experimental features
+- bug fixes
+****
+
+----
+--------   --------   --------   --------              --------
+|      |   |      |   |      |   | ===  |              |      |
+| ==   |   |      |   |      |   |      |              |      |
+|      |   |      |   |      |   |    = |              |      |
+|      |   |      |   |      |   |      |              |      |
+|   =  |   |   == |   |      |   |      |              | ===  |
+|      |   |      |   |      |   |      |              |      |
+--------   --------   --------   --------              --------
+----
+
+// //////////////////////////////////////////////////////////////
+== Potential Problems
+
+// //////////////////////////////////////////////////////////////
+== Potential Problems
+
+.Copying change sets
+****
+When one contributor makes a set of changes,
+we need a mechanism for copying those changes to other developers.
+****
+
+****
+For collaboration, for testing, for deployment, ...
+****
+
+// //////////////////////////////////////////////////////////////
+== Potential Problems
+
+.Atomic change sets
+****
+A change set usually involves changes to _several different files_.
+
+We should always see the state either _before_ all of the changes, or _after_ all of the changes.
+****
+
+****
+We should never see a set of files with *some of the changes applied*, but not others.
+****
+
+// //////////////////////////////////////////////////////////////
+== Potential Problems
+
+.Merging change sets
+****
+Developers often make changes to the _same files_ at the _same time_.
+
+We need a mechanism for _merging those changes_, ideally automatically.
+****
+
+// //////////////////////////////////////////////////////////////
+== Potential Problems
+
+.Multiple versions
+****
+Individual developers work on different features at the same time, each being
+a _different version_ of the code base.
+****
+
+****
+For example:
+
+- new feature A
+- new feature B
+- bug fix version
+- test version from a different developer
+- canary version
+****
+
+// //////////////////////////////////////////////////////////////
+== Potential Problems
+
+.Multiple dev systems
+****
+Individual developers work on different computers:
+
+- a desktop at work, a laptop at home, ...
+
+Changes must be propagated between these systems.
+****
+
+// //////////////////////////////////////////////////////////////
+== Source-Code Control Systems
+
+****
+Source-code control systems:
+
+- manage (possibly large) sets of files
+- manage multiple versions of those files
+- usually distributed +
+- historical: RCS, CVS, ...
+- current: git, subversion, mercurial, ...
+****
+
+// //////////////////////////////////////////////////////////////
+== Git
+
+****
+Git is a _source code control system_ and a _version control system_.
+****
+
+// //////////////////////////////////////////////////////////////
+== Git
+
+****
+Git manages:
+
+- private/proprietary/commercial software projects
+- open-source software projects
+- personal projects
+- or just your own Linux config files and scripts
+****
+
+****
+Or, if you happen to be a lecturer, then all of your lecture material.
+****
+
+// // //////////////////////////////////////////////////////////////
+// == Git
+//
+// ****
+// Git can be used to manage:
+//
+// - private/proprietary/commercial software projects
+// - open-source software projects
+// - or just your own files +
+//   (for example, your own Linux configuration files and scripts)
+// ****
+//
+// ****
+// All of my lecture material lives in git.
+//
+// That includes my Einstein markers, my slides, the lab sheets, the web
+// site (and more) -- if you know my modules.
+// ****
+
+// //////////////////////////////////////////////////////////////
+== Git-Based Web sites
+
+****
+Web sites like https://github.com/[Github] and https://bitbucket.org/[Bitbucket] provide free hosting of git repositories (and more).
+
+(I think these sites offer free, private repos for students.)
+****
+
+****
+For SoC students, we host a https://gitlab.computing.dcu.ie/[Gitlab] instance.
+
+(Use the login credentials that you use in the labs.)
+****
+
+// //////////////////////////////////////////////////////////////
+== Repositories
+
+****
+In git terminology:
+
+- a git project is known as a _repository_,
+- or _repo_ for short.
+****
+
+****
+A repo contains:
+
+- all of a project's files,
+- all _versions_ of those files,
+- and all _historical versions_ of those files.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+****
+A _change set_ is a set of changes to a set of files:
+
+- edits
+- new files
+- removed files
+- renamed files
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+****
+A _change set_ is a set of changes to a set of files:
+
+- edits
+- new files
+- removed files
+- renamed files
+****
+
+****
+A repo consists of a _sequence_ of change sets.
+
+And that sequence of change sets defines the current state of a project's files.
+
+(Simplified.)
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+****
+A _change set_ is a set of changes to a set of files:
+
+- edits
+- new files
+- removed files
+- renamed files
+****
+
+****
+Change sets are bundled into what is called a _commit_.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets (Example)
+
+// //////////////////////////////////////////////////////////////
+== Change Sets (Example)
+
+****
+Create a file +test.txt+ containing the following text...
+****
+
+----
+its fleece was white as coal.
+Nobody expects the Spanish Inquisition!
+the dog was sure to go.
+And everywhere that John went,
+----
+
+****
+Commit.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets (Example)
+
+****
+Change the word +dog+ to +lamb+.
+****
+
+****
+Commit.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets (Example)
+
+****
+Swap the order of the last two lines.
+****
+
+****
+Commit.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets (Example)
+
+****
+Delete line 2.
+
+Add a new first line...
+****
+
+----
+John had a little lamb,
+----
+
+****
+Commit.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets (Example)
+
+****
+Rename file to +mary.txt+.
+****
+
+****
+Commit.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets (Example)
+
+****
+Change every occurrence of +John+ to +Mary+.
+
+Change every occurrence of +coal+ to +snow+.
+****
+
+****
+Commit.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets (Example)
+
+****
+Applying each of these changes in turn, we end up with a file +mary.txt+ containing:
+
+----
+Mary had a little lamb,
+its fleece was white as snow.
+And everywhere that Mary went,
+the lamb was sure to go.
+----
+****
+
+****
+The *sequence of changes* (change sets, or commits) define the final state of the file.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty)
+----
+
+.System 2
+----
+# (empty)
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1
+----
+
+.System 2
+----
+# (empty)
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2
+----
+
+.System 2
+----
+# (empty)
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3
+----
+
+.System 2
+----
+# (empty)
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3
+----
+
+.System 2
+----
+# (empty)
+----
+
+****
+The changes described by these three commits transform an empty project to the current project state.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3
+----
+
+.System 2
+----
+# (empty)
+----
+
+****
+And we can copy the commits to a different system...
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3
+----
+
+.System 2
+----
+# (empty) c1 c2 c3
+----
+
+****
+And we get an exact copy of the current project state.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3
+----
+
+.System 2
+----
+# (empty) c1 c2 c3
+----
+
+****
+We make more changes...
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+****
+And, eventually, copy these changes back to System 1...
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+****
+And, eventually, copy these changes back to System 1.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+****
+The project state is now identical on both systems.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+****
+A git-managed project is defined:
+
+- not by the state of the files,
+- but rather by the _sequence of commits_ which generates those files.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+****
+We can clone the project on a new system...
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 3
+----
+# (empty)
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 3
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 3
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+****
+And we have a new complete copy of the project files.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 3
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+****
+And so on...
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 3
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 c8
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 3
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 c8 c9
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 3
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 c8 c9 c10
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 c8 c9 c10
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 3
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 c8 c9 c10
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 c8 c9 c10
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 c8 c9 c10
+----
+
+.System 3
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 c8 c9 c10
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 c8 c9 c10
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 c8 c9 c10
+----
+
+****
+Time travel.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 | c6 c7 c8 c9 c10
+----
+
+****
+We can go back to any previous version of the project:
+
+- retrieve deleted code
+- locate which commit introduced a bug (bisect).
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 | c8 c9 c10
+----
+
+****
+We can go back to any previous version of the project:
+
+- retrieve deleted code
+- locate which commit introduced a bug (bisect).
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.Key point
+****
+The state of a project is defined by a sequence of commits.
+****
+
+.In git:
+****
+- we don't share files,
+- we share sequences of commits.
+****
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+This is not a full tutorial on git.
+
+This is just a demo of basic git usage.
+****
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+1. Look at https://gitlab.computing.dcu.ie/sblott/test-project-addition[this repo] on GitLab.
+2. Clone the `test-project-addition` repo.
+****
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+1. Look at https://gitlab.computing.dcu.ie/sblott/test-project-addition[this repo] on GitLab.
+2. Clone the `test-project-addition` repo.
+****
+
+.Over HTTPS:
+----
+git clone https://gitlab.computing.dcu.ie/USER/PROJECT.git
+git clone https://gitlab.computing.dcu.ie/sblott/test-project-addition.git
+----
+
+.Or over SSH:
+----
+git clone git@gitlab.computing.dcu.ie:sblott/test-project-addition.git
+----
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+1. Look at https://gitlab.computing.dcu.ie/sblott/test-project-addition[this repo]
+   on GitLab.
+2. Clone the `test-project-addition` repo.
+****
+
+****
+We now have a local copy of:
+
+- all of the repo's files,
+- all versions of those files, and
+- all historical versions of those files.
+****
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+Tell git who we are.
+
+We do this once every time we clone a repo.
+****
+
+----
+cd test-project-addition
+
+git config user.name "YOUR REAL NAME"
+git config user.email YOUR_EMAIL_ADDRESS
+----
+
+----
+git config credential.helper cache
+----
+
+****
+The credentials cache is explained https://git-scm.com/docs/git-credential-cache[here].
+****
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+Tell git your preferred text editor.
+
+Choose *one* of...
+****
+
+----
+git config core.editor "gedit -s"
+git config core.editor "subl -n -w"
+git config core.editor "sublime_text -n -w"
+git config core.editor "mate -w"
+git config core.editor "gvim -f"
+git config core.editor "vim"
+git config core.editor "nano"
+----
+
+****
+The quotes, above, are *required*.
+****
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+Do *not* do this...
+****
+
+----
+git config --global core.editor gedit
+----
+
+****
+The editor you use must *block* the calling process until it exits.
+****
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+You only do the previous steps once per cloned repo.
+****
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+1. Clone repo on +smblott+ (in office).
+2. Clone repo on +fouly+ (at home).
+****
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+Now, what does this project do?
+
+It implements programs to add up the command-line arguments in various programming languages
+****
+
+.Try:
+----
+make
+
+make test
+----
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+. Create a Python 2 implementation.
+. Tell git that we want it to track our new file.
+. Add a test script.
+. Add that to the Makefile.
+. Commit.
+****
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+Create a Python 2 implementation.
+****
+
+[source, python]
+.add-python2.py:
+----
+#!/usr/bin/env python
+
+import sys
+total = 0
+
+i = 1
+while i < len(sys.argv):
+   total += int(sys.argv[i])
+   i += 1
+
+print total
+----
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+Tell git that we want it to track our new file.
+****
+
+----
+git add add-python2.py
+----
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+Add a test:
+
+- add test file
+- update Makefile
+****
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+Commit.
+****
+
+----
+git commit -a
+----
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+Push changes.
+****
+
+****
+This step copies the new files and changes (technically, the _change set_) to Gitlab.
+****
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+Push changes.
+****
+
+.Usually just:
+----
+git push
+----
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+1. Pull repo on +smblott+ (in office).
+2. Pull repo on +fouly+ (at home).
+****
+
+----
+git pull
+----
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+1. Pull repo on +smblott+ (in office).
+2. Pull repo on +fouly+ (at home).
+****
+
+.Observe
+****
+The new files have been copied to those systems too.
+****
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+
+.Workflow:
+----
+git pull                               # Pull any remote updates.
+
+# Make changes (edit files, create new files).
+
+git add FILENAME                       # For any new files.
+
+git commit -a                          # Commit.
+git commit -a -m "Message"             # Or like this.
+
+git push                               # Push changes.
+----
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+Commits bundle up the changes to one *or more* files into a single change set.
+
+Change sets are atomic. (Usually.)
+****
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+Files which are automatically generated should not be tracked.
+****
+
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+Files which are automatically generated should not be tracked.
+****
+
+----
+git status
+----
+
+----
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        Add.class
+        add
+----
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+Files matching patterns in any file called +.gitignore+ are ignored by +git+.
+****
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+Files matching patterns in any file called +.gitignore+ are ignored by +git+.
+****
+
+.+.gitignore+:
+----
+add
+*.class
+----
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+Files matching patterns in any file called +.gitignore+ are ignored by +git+.
+****
+
+.+.gitignore+:
+----
+add
+*.class
+----
+
+----
+git add .gitignore
+git commit -a -m "Add .gitignore."
+git push
+----
+
+// //////////////////////////////////////////////////////////////
+== Which files should be tracked?
+
+****
+Be very careful about which files are tracked, and which files are ignored.
+****
+
+****
+Usually ignore:
+
+  - automatically generated files
+  - binary files
+****
+
+// //////////////////////////////////////////////////////////////
+== Which files should be tracked?
+
+****
+Be very careful about which files are tracked, and which files are ignored.
+****
+
+****
+Usually ignore:
+
+- automatically generated files
+- binary files
+****
+
+****
+For Android Studio projects:
+
+- work out how you will be using git _right from the start_.
+****
+
+// //////////////////////////////////////////////////////////////
+== Other Useful Commands
+
+----
+git status
+git diff
+git log
+
+git fetch origin
+git diff origin/master
+----
+
+// // //////////////////////////////////////////////////////////////
+// == Demo
+//
+// ****
+// Next, we will demo working with _different versions_ of the files.
+// ****
+//
+// // //////////////////////////////////////////////////////////////
+// == Demo
+//
+// ****
+// 1. Create a new branch +remove-python2+.
+// 2. Remove the perl implementation.
+// ****
+//
+// ----
+// git checkout -b 'remove-python2'
+//
+// # Make changes.
+//
+// git commit -a -m "Remove python2."
+// git push -u origin remove-python2
+// ----
+//
+// // //////////////////////////////////////////////////////////////
+// == Demo
+//
+// ****
+// We now have _two versions_ of the project:
+//
+// - +master+ is the main branch
+// - +remove-python2+, in which the python2 implementation has been removed
+// ****
+//
+// // //////////////////////////////////////////////////////////////
+// == Demo
+//
+// ****
+// We can jump back and forward between each branch.
+// ****
+//
+// ----
+// git checkout 'master'
+// ls -l
+//
+// git checkout 'remove-python2'
+// ls -l
+// ----
+//
+// // //////////////////////////////////////////////////////////////
+// == Demo
+//
+// ****
+// We can share the new branch with other developers:
+// ****
+//
+// ----
+// git checkout 'remove-python2'
+// git push -u origin remove-python2
+// ----
+//
+// // //////////////////////////////////////////////////////////////
+// == Demo
+//
+// ****
+// We decide we want to ("permanently") accept these changes.
+// ****
+//
+// // //////////////////////////////////////////////////////////////
+// == Demo
+//
+// ****
+// We decide we want to ("permanently") accept these changes.
+// ****
+//
+// ----
+// git checkout master
+// git merge remove-python2
+// git push
+// ----
+//
+// // //////////////////////////////////////////////////////////////
+// == Demo
+//
+// ****
+// We decide we want to ("permanently") accept these changes.
+// ****
+//
+// ****
+// Or, we can merge via Gitlab.
+// ****
+//
+// // // //////////////////////////////////////////////////////////////
+// // == Demo
+// //
+// // ****
+// // We decide we want to ("permanently") accept these changes.
+// // ****
+// //
+// // ****
+// // We could do this locally.
+// //
+// // But on open-source projects, we may not be the owner of the project.
+// // ****
+// //
+// // ****
+// // In this case, we submit a _pull request_ (PR) on Github.
+// //
+// // See https://github.com/smblott-github/test-project-addition[here, again].
+// // ****
+//
+// // //////////////////////////////////////////////////////////////
+// == Workflow
+//
+// ****
+// For open-source and team projects, you normally _do not work on the_ +master+ _branch_:
+//
+// - +git pull+ -- to get the most recent version of the code
+// - create a feature branch
+// - work on the feature in that branch
+// - when it's ready:
+// ** merge that branch into +master+
+// ****
+//
+// // // //////////////////////////////////////////////////////////////
+// // == Aliases
+// //
+// // ****
+// // Remembering those cryptic +git+ commands can be difficult.
+// // ****
+// //
+// // ****
+// // Unix shells provide a mechanism (_aliases_) for you to use short, memorable
+// // names for more complex commands.
+// // ****
+// //
+// // ****
+// // Less remembering, less typing, fewer typos.
+// // ****
+// //
+// // // //////////////////////////////////////////////////////////////
+// // == Aliases
+// //
+// // ----
+// // alias gc="git commit -a -m"          # Git Commit
+// //
+// // alias gco="git checkout"             # Git Check Out
+// //
+// // alias gcoo="git checkout --track"    # Git Check Out Old
+// // alias gcon="git checkout -n"         # Git Check Out New
+// // ----
+// //
+// // // //////////////////////////////////////////////////////////////
+// // == Aliases
+// //
+// // ----
+// // alias gc="git commit -a -m"          # Git Commit
+// //
+// // alias gco="git checkout"             # Git Check Out
+// //
+// // alias gcoo="git checkout --track"    # Git Check Out Old
+// // alias gcon="git checkout -n"         # Git Check Out New
+// // ----
+// //
+// // .Then:
+// // ----
+// // gc "Cool new feature."               # Git commit (with a suitable commit message)
+// // ----
+// //
+// // // //////////////////////////////////////////////////////////////
+// // == Aliases and +.bashrc+
+// //
+// // ****
+// // If a file +.bashrc+ exists in your home directory, then the +bash+ shell reads it in every new shell.
+// // ****
+// //
+// // ****
+// // You can add these aliases to your +.bashrc+, and they will be automatically
+// // available in all new shells.
+// // ****
+
+// //////////////////////////////////////////////////////////////
+== Git
+
+****
+In the School of Computing, git is already installed:
+
+- on the Linux machines in the labs
+- on the Windows machines in the labs
+****
+
+// //////////////////////////////////////////////////////////////
+== Installing Git
+
+****
+For Linux, probably something like:
+
+----
+sudo apt-get install git
+----
+****
+
+// //////////////////////////////////////////////////////////////
+== Installing Git
+
+****
+For OS X (Macs):
+
+- google "_installing git on OS X_"
+  (the top link looks good)
+****
+
+****
+For Windows:
+
+- actually, the top link for the Google query above has information for Windows too
+- or google "_git for windows_"
+****
+
+// //////////////////////////////////////////////////////////////
+== Practical Work
+
+****
+- Go to https://gitlab.computing.dcu.ie/sblott/test-project-addition[Gitlab].
+- _Fork_ the repo.
+- Clone *_your fork_* _of the repo_.
+- Add a new program that sums its command-line arguments in a programming language of your choice.
+** Include a new test.
+- Commit.
+- Push.
+- Submit an MR on Gitlab (optional, unlikely to be merged).
+
+https://gitlab.computing.dcu.ie/sblott/test-project-addition/blob/master/docs/cheat-sheet.md#cheat-sheet[Cheat sheet].
+****
+
+// //////////////////////////////////////////////////////////////
+== Next...
+
+.Your workflow is important
+****
+- Create scripts/shell functions to automate the repetitive parts.
+- Set up your shell:
+** Notification of git status in prompt somewhere.
+** Notification of git branch in prompt somewhere.
+** Git-specific TAB  completion.
+****
+
+****
+Also: consider zsh (it's much better than bash).
+****
+
+// //////////////////////////////////////////////////////////////
+== Finally...
+
+****
+Go to https://gitlab.computing.dcu.ie/sblott/test-project-addition[Gitlab] and copy the link to clone this repo.
+****
+
+----
+git remote add upstream THAT_LINK_IN_THE_CLIPBOARD
+git fetch upstream
+git merge upstream/master
+----
+
+****
+You're merging my brand new changes into your repo:
+
+- There might be a conflict in +Makefile+.
+- If there is, then fix it, then commit the fix.
+- Push.
+
+Use +git status+ to keep track of where you are.
+****
+
+////
+//vim: ft=asciidoc
+//////
+//

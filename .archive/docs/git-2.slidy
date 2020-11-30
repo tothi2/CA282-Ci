@@ -1,0 +1,1525 @@
+= Git 2
+Stephen Blott <stephen.blott@dcu.ie>
+:data-uri:
+:theme: smblott
+
+// //////////////////////////////////////////////////////////////
+== Information and Links
+
+.Links
+****
+- These slides: http://smblott.org/git-2.html[]
+- Gitlab: https://gitlab.computing.dcu.ie/[]
+- This repo: https://gitlab.computing.dcu.ie/sblott/test-project-addition[]
+- TTY-cast: https://ttycast.computing.dcu.ie/[]
+****
+
+.Get ready
+****
+1. Boot into Linux.
+2. Open the TTY-cast link above if you want to view my terminal.
+3. Open a terminal (e.g. `gnome-terminal`).
+****
+
+// //////////////////////////////////////////////////////////////
+== Cannot say loudly enough...
+
+// //////////////////////////////////////////////////////////////
+== Cannot say loudly enough...
+
+****
+Set up an SSH key pair for GitLab.
+
+(That way, you won't have to type your username and password all of the time.)
+****
+
+// //////////////////////////////////////////////////////////////
+== Cannot say loudly enough...
+
+****
+Set up an SSH key pair for GitLab.
+
+(That way, you won't have to type your username and password all of the time.)
+****
+
+----
+ssh-keygen -t rsa -b 4096 -C "YOUR_EMAIL_ADDRESS"
+----
+
+****
+Skip entering a passphrase.
+****
+
+// //////////////////////////////////////////////////////////////
+== Cannot say loudly enough...
+
+****
+Set up an SSH key pair for GitLab.
+
+(That way, you won't have to type your username and password all of the time.)
+****
+
+----
+ls ~/.ssh
+----
+
+----
+id_rsa                      # Your private key.
+id_rsa.pub                  # Your public key.
+----
+
+// //////////////////////////////////////////////////////////////
+== Cannot say loudly enough...
+
+****
+Set up an SSH key pair for GitLab.
+
+(That way, you won't have to type your username and password all of the time.)
+****
+
+****
+Paste the *contents of* your *public* key to Gitlab: https://gitlab.computing.dcu.ie/profile/keys[here].
+****
+
+// //////////////////////////////////////////////////////////////
+== Cannot say loudly enough...
+
+****
+Set up an SSH key pair for GitLab.
+
+(That way, you won't have to type your username and password all of the time.)
+****
+
+****
+Now, when cloning a repo, always use the +git@...+ URL.
+
+(Instead of +https://...+.)
+****
+
+// //////////////////////////////////////////////////////////////
+== Cannot say loudly enough...
+
+// //////////////////////////////////////////////////////////////
+== Cannot say loudly enough...
+
+****
+If you're using the command line, then
+
+- create helpful aliases
+****
+
+****
+E.g.:
+
+- +gc+, +gstatus+, +gco+, +gcon+ +gcoo+
+****
+
+// //////////////////////////////////////////////////////////////
+== Plan
+
+****
+. Working with branches.
+. Merging.
+. Continuous integration.
+****
+
+// //////////////////////////////////////////////////////////////
+== Reminder
+
+----
+ # master
+
+ |---|  |----|  |----|  |----| Four files,
+ |   |  |    |  |    |  |    | the result of c1, c2 and c3.
+ |   |  |    |  |    |  |    |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3
+----
+
+****
+The state of a project is defined by a sequence of commits.
+****
+
+// //////////////////////////////////////////////////////////////
+== Reminder
+
+----
+ # master
+
+ |---|  |----|  |----|  |----| We make some changes...
+ |   |  |    |  |    |  |    |
+ |   |  |    |  |    |  |    |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3
+----
+
+// //////////////////////////////////////////////////////////////
+== Reminder
+
+----
+ # master*
+
+ |---|  |----|  |----|  |----| We make some changes.
+ | ++|  | *  |  | *  |  |    |
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3
+----
+
+// //////////////////////////////////////////////////////////////
+== Reminder
+
+----
+ # master*
+
+ |---|  |----|  |----|  |----| We make some changes.
+ | ++|  | *  |  | *  |  |    |
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3
+----
+
+// //////////////////////////////////////////////////////////////
+== Reminder
+
+----
+ # master*
+
+ |---|  |----|  |----|  |----| And commit those changes...
+ | ++|  | *  |  | *  |  |    |
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3
+----
+
+// //////////////////////////////////////////////////////////////
+== Reminder
+
+----
+ # master*
+
+ |---|  |----|  |----|  |----| And commit those changes...
+ | ++|  | *  |  | *  |  |    |
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3
+----
+
+[source, sh]
+----
+git commit -a -m "Funky new stuff."
+----
+
+// //////////////////////////////////////////////////////////////
+== Reminder
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|
+ | ++|  | *  |  | *  |  |    |
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4
+----
+
+// //////////////////////////////////////////////////////////////
+== Reminder
+
+----
+ # master
+
+ |---|  |----|  |----|  |----| These are the files you see.
+ | ++|  | *  |  | *  |  |    | These are the files you work with.
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4
+----
+
+// //////////////////////////////////////////////////////////////
+== Reminder
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|
+ | ++|  | *  |  | *  |  |    |
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git                          But the git magic happens here,
+                               in the ".git" directory.
+ master: c1 c2 c3 c4
+----
+
+****
+The hidden .git directory contains all of your commits, your versions, copies of remote repositories, and more.
+****
+
+// //////////////////////////////////////////////////////////////
+== Reminder
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|
+ | ++|  | *  |  | *  |  |    |
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4           <-- Sequence of commits.
+----
+
+****
+A git project is a *sequence of commits*.
+****
+
+// //////////////////////////////////////////////////////////////
+== Branches
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|
+ | ++|  | *  |  | *  |  |    |
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4           <-- Sequence of commits.
+----
+
+****
+Actually, a git project is a *set of* sequences of commits.
+****
+
+// //////////////////////////////////////////////////////////////
+== Branches
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|
+ | ++|  | *  |  | *  |  |    |
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4           <-- Sequence of commits.
+----
+
+****
+Each sequence of commits is known as a _branch_.
+****
+
+// //////////////////////////////////////////////////////////////
+== Branches
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|
+ | ++|  | *  |  | *  |  |    |
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4           <-- master
+----
+
+****
+The default (or main) branch associated with a project is +master+.
+****
+
+// //////////////////////////////////////////////////////////////
+== Branches
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|
+ | ++|  | *  |  | *  |  |    |
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4           <-- master
+----
+
+****
+But there area usually other branches too...
+****
+
+// //////////////////////////////////////////////////////////////
+== Branches
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|
+ | ++|  | *  |  | *  |  |    |
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4
+    dev: c1 c2 c3 c4 c5
+#
+
+#
+----
+
+// //////////////////////////////////////////////////////////////
+== Branches
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|
+ | ++|  | *  |  | *  |  |    |
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4
+    dev: c1 c2 c3 c4 c5
+#
+
+$ git branch                      <-- List the available branches.
+----
+
+// //////////////////////////////////////////////////////////////
+== Branches
+
+----
+ # master                         <-- master is checked out, currently.
+
+ |---|  |----|  |----|  |----|        These are the files and directories
+ | ++|  | *  |  | *  |  |    |        which you work with.
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4
+    dev: c1 c2 c3 c4 c5
+#
+
+# At any point in time, exactly one branch is "checked out".
+----
+
+// //////////////////////////////////////////////////////////////
+== Branches
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|
+ | ++|  | *  |  | *  |  |    |
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4
+    dev: c1 c2 c3 c4 c5
+#
+
+# You can change the checked-out branch...
+----
+
+// //////////////////////////////////////////////////////////////
+== Branches
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|
+ | ++|  | *  |  | *  |  |    |
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4
+    dev: c1 c2 c3 c4 c5
+#
+
+$ git checkout dev
+----
+
+// //////////////////////////////////////////////////////////////
+== Branches
+
+----
+ # dev                            <-- This is the checked out branch.
+
+ |---|  |----|  |----|  |----|    The checked-out files change
+ | *+|  | * -|  |  % |  |!!  |    to reflect the sequence of commits
+ |-  |  |+ - |  | *  |  |  + |    in the dev branch.
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4
+    dev: c1 c2 c3 c4 c5           <-- We now have the result of
+#                                     Applying this sequence of
+                                      commits.
+#
+----
+
+// //////////////////////////////////////////////////////////////
+== Branches
+
+----
+ # dev
+
+ |---|  |----|  |----|  |----|    And we can go back...
+ | *+|  | * -|  |  % |  |!!  |
+ |-  |  |+ - |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4
+    dev: c1 c2 c3 c4 c5
+#
+
+$ git checkout master
+----
+
+// //////////////////////////////////////////////////////////////
+== Branches
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|    And we're back with the files
+ | ++|  | *  |  | *  |  |    |    of the master branch.
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4
+    dev: c1 c2 c3 c4 c5
+#
+
+#
+----
+
+// //////////////////////////////////////////////////////////////
+== Branches
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|    We can create a new branch...
+ | ++|  | *  |  | *  |  |    |
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4
+    dev: c1 c2 c3 c4 c5
+#
+
+#
+----
+
+// //////////////////////////////////////////////////////////////
+== Branches
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|    We can create a new branch...
+ | ++|  | *  |  | *  |  |    |
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4
+    dev: c1 c2 c3 c4 c5
+#
+
+$ git checkout -b sblott
+----
+
+// //////////////////////////////////////////////////////////////
+== Branches
+
+----
+ # sblott
+
+ |---|  |----|  |----|  |----|    We can create a new branch.
+ | ++|  | *  |  | *  |  |    |
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4
+    dev: c1 c2 c3 c4 c5
+ sblott: c1 c2 c3 c4
+
+#
+----
+
+// //////////////////////////////////////////////////////////////
+== Branches
+
+----
+ # sblott
+
+ |---|  |----|  |----|  |----|    The new branch starts as a copy of
+ | ++|  | *  |  | *  |  |    |    whatever branch was checked out
+ |   |  |+   |  | *  |  |  + |    when the branch was created.
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4
+    dev: c1 c2 c3 c4 c5
+ sblott: c1 c2 c3 c4
+
+#
+----
+
+// //////////////////////////////////////////////////////////////
+== Branches
+
+****
+Normally, +master+ is the main branch of your project.
+
++master+ is the _known-good_ branch.
+****
+
+****
+Other branches will contain:
+
+- your individual work
+- experimental work
+- specific feature development
+****
+
+// //////////////////////////////////////////////////////////////
+== Branches
+
+****
+For a two-person project, normally you'd have:
+
+- +master+
+- +bloggsj45+ - a branch for Joe Bloggs' work
+- +doej13+ - a branch for John Doe's work
+- and other feature or experimental branches as needed
+****
+
+// //////////////////////////////////////////////////////////////
+== Getting Started
+
+****
+Create your GitLab repo.
+****
+
+// //////////////////////////////////////////////////////////////
+== Getting Started
+
+****
+Clone your GitLab repo.
+****
+
+----
+$ git clone YOUR_GITLAB_URL
+
+$ cd YOUR_PROJECT_DIRECTORY
+
+$ git config user.name "YOUR REAL NAME"
+$ git config user.email YOUR_EMAIL_ADDRESS
+$ git config core.editor "gedit -s"
+----
+
+// //////////////////////////////////////////////////////////////
+== Getting Started
+
+****
+Create a branch for your part of the project
+****
+
+----
+$ git checkout -b bloggsj45
+----
+
+// //////////////////////////////////////////////////////////////
+== Getting Started
+
+****
+Push that new branch up to GitLab.
+****
+
+----
+$ git push -u origin bloggsj45
+----
+
+// //////////////////////////////////////////////////////////////
+== Getting Started
+
+****
+Push that new branch up to GitLab.
+****
+
+----
+$ git push -u origin bloggsj45
+----
+
+****
+The "+-u+" is required for the _first push only_.
+
+Thereafter you just use "+git push+" and "+git pull+" as described previously.
+****
+
+// //////////////////////////////////////////////////////////////
+== Getting Started -- Summary
+
+----
+$ git clone YOUR_GITLAB_URL
+
+$ cd YOUR_PROJECT_DIRECTORY
+
+$ git config user.name "YOUR REAL NAME"
+$ git config user.email YOUR_EMAIL_ADDRESS
+$ git config core.editor "gedit -s"
+
+$ git checkout -b bloggsj45
+$ git push -u origin bloggsj45
+----
+
+// //////////////////////////////////////////////////////////////
+== Merging
+
+// //////////////////////////////////////////////////////////////
+== Merging
+
+****
+Time goes on.
+****
+
+****
+You make changes to your personal branch, add some commits, and you decide that your work is good.
+
+It's time to merge your new work into +master+...
+****
+
+// //////////////////////////////////////////////////////////////
+== Merging
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|    Say we're in this state.
+ | ++|  | *  |  | *  |  |    |
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4
+    dev: c1 c2 c3 c4 c5
+ sblott: c1 c2 c3 c4 c6 c7 c8
+
+#
+----
+
+// //////////////////////////////////////////////////////////////
+== Merging
+
+----
+ # sblott
+
+ |---|  |----|  |----|  |----|    Say we're in this state.
+ | *+|  |    |  |%*  |  |*   |
+ |%  |  |++  |  | * %|  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4
+    dev: c1 c2 c3 c4 c5
+ sblott: c1 c2 c3 c4 c6 c7 c8
+
+#
+----
+
+// //////////////////////////////////////////////////////////////
+== Merging
+
+----
+ # sblott
+
+ |---|  |----|  |----|  |----|    We want to merge the changes in
+ | *+|  |    |  |%*  |  |*   |    sblott into master.
+ |%  |  |++  |  | * %|  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4
+    dev: c1 c2 c3 c4 c5
+ sblott: c1 c2 c3 c4 c6 c7 c8
+
+#
+----
+
+// //////////////////////////////////////////////////////////////
+== Merging
+
+----
+ # sblott
+
+ |---|  |----|  |----|  |----|    First, we make sure that our local
+ | *+|  |    |  |%*  |  |*   |    copy of master is up to date...
+ |%  |  |++  |  | * %|  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4
+    dev: c1 c2 c3 c4 c5
+ sblott: c1 c2 c3 c4 c6 c7 c8
+
+#
+----
+
+// //////////////////////////////////////////////////////////////
+== Merging
+
+----
+ # sblott
+
+ |---|  |----|  |----|  |----|    First, we make sure that our local
+ | *+|  |    |  |%*  |  |*   |    copy of master is up to date...
+ |%  |  |++  |  | * %|  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4
+    dev: c1 c2 c3 c4 c5
+ sblott: c1 c2 c3 c4 c6 c7 c8
+
+$ git checkout master             We checkout the master branch...
+----
+
+// //////////////////////////////////////////////////////////////
+== Merging
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|    And we find that there have been
+ | ++|  | *  |  | *  |  |  %%|    some changes.
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4 c9           <-- Look, a new commit.
+    dev: c1 c2 c3 c4 c5
+ sblott: c1 c2 c3 c4 c6 c7 c8
+
+#
+----
+
+// //////////////////////////////////////////////////////////////
+== Merging
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|    Next, we do the merge...
+ | ++|  | *  |  | *  |  |  %%|
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4 c9
+    dev: c1 c2 c3 c4 c5
+ sblott: c1 c2 c3 c4 c6 c7 c8
+
+#
+----
+
+// //////////////////////////////////////////////////////////////
+== Merging
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|    Next, we do the merge...
+ | ++|  | *  |  | *  |  |  %%|
+ |   |  |+   |  | *  |  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4 c9
+    dev: c1 c2 c3 c4 c5
+ sblott: c1 c2 c3 c4 c6 c7 c8
+
+$ git merge sblott
+----
+
+// //////////////////////////////////////////////////////////////
+== Merging
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|
+ | *+|  |    |  |%*  |  |* %%|
+ |%  |  |++  |  | * %|  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4 c9 c6 c7 c8
+    dev: c1 c2 c3 c4 c5
+ sblott: c1 c2 c3 c4 c6 c7 c8
+
+#
+----
+
+// //////////////////////////////////////////////////////////////
+== Merging
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|    Now we have:
+ | *+|  |    |  |%*  |  |* %%|    c1 c2 c3 c4 which we had previously
+ |%  |  |++  |  | * %|  |  + |    c9          which comes from elsewhere
+ |---|  |----|  |----|  |----|    c6 c7 c8    which is our new work
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4 c9 c6 c7 c8
+    dev: c1 c2 c3 c4 c5
+ sblott: c1 c2 c3 c4 c6 c7 c8
+
+#
+----
+
+// //////////////////////////////////////////////////////////////
+== Merging
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|    Next, we push master
+ | *+|  |    |  |%*  |  |* %%|    back to GitLab...
+ |%  |  |++  |  | * %|  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4 c9 c6 c7 c8
+    dev: c1 c2 c3 c4 c5
+ sblott: c1 c2 c3 c4 c6 c7 c8
+
+#
+----
+
+// //////////////////////////////////////////////////////////////
+== Merging
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|    Next, we push master
+ | *+|  |    |  |%*  |  |* %%|    back to GitLab.
+ |%  |  |++  |  | * %|  |  + |
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4 c9 c6 c7 c8
+    dev: c1 c2 c3 c4 c5
+ sblott: c1 c2 c3 c4 c6 c7 c8
+
+$ git push
+----
+
+// //////////////////////////////////////////////////////////////
+== Merging
+
+----
+ # master
+
+ |---|  |----|  |----|  |----|    Our team-mate will pick up
+ | *+|  |    |  |%*  |  |* %%|    our new work the next time
+ |%  |  |++  |  | * %|  |  + |    they pull from GitLab.
+ |---|  |----|  |----|  |----|
+
+ ------------------------------------------------------
+ .git
+
+ master: c1 c2 c3 c4 c9 c6 c7 c8
+    dev: c1 c2 c3 c4 c5
+ sblott: c1 c2 c3 c4 c6 c7 c8
+
+#
+----
+
+// //////////////////////////////////////////////////////////////
+== Workflow
+
+// //////////////////////////////////////////////////////////////
+== Workflow
+
+****
+Usually, do development on your own branch.
+****
+
+// //////////////////////////////////////////////////////////////
+== Workflow
+
+****
+First, make sure that your development branch is up to date.
+****
+
+----
+git checkout master               # First, make sure we're up
+git pull                          # to date.
+
+git checkout sblott               # Merge any changes into our
+git merge master                  # own development branch.
+----
+
+// //////////////////////////////////////////////////////////////
+== Workflow
+
+****
+Develop your code.
+****
+
+----
+git checkout sblott
+
+# Make changes.
+git commit -a -m "Start work on new interface."
+
+# Make changes.
+git commit -a -m "Finalise new interface."
+
+git push                          # Push your work to GitLab.
+                                  # (Pushing the sblott branch.)
+----
+
+// //////////////////////////////////////////////////////////////
+== Workflow
+
+****
+Eventually you decide that your changes should be merged into master.
+****
+
+// //////////////////////////////////////////////////////////////
+== Workflow
+
+****
+Eventually you decide that your changes should be merged into master.
+****
+
+----
+git checkout master
+git pull                          # Make sure you're up to date!
+
+git merge sblott
+git push                          # Push master back to GitLab.
+----
+
+****
+Your team-mate will pick up your changes the next time they pull +master+.
+****
+
+// //////////////////////////////////////////////////////////////
+== Workflow -- Good Practice
+
+****
+- Pull +master+ frequently.  Don't get out of date.
+- Never merge onto master without *knowing* that you're up to date.
+- After merging onto +master+, push your work immediately.
+- Don't let your development branch diverge too far from master.
+- Try to structure your work such that it can be merged in small stable units, and *regularly*.
+****
+
+// //////////////////////////////////////////////////////////////
+== Workflow -- Good Practice
+
+****
+If you know that your work is likely to create conflicts:
+
+. Stop working independently.
+. Get all work from all team-mates merged into +master+.
+. Make the conflicting changes (e.g. large structural changes).
+. Pull the new +master+.
+. Begin working independently again.
+****
+
+// //////////////////////////////////////////////////////////////
+== Merge Conflicts
+
+****
+Normally, git merges branches without your intervention.
+****
+
+****
+But sometimes there's a conflict:
+
+- the same code has been changed in both branches
+- git cannot figure out what to do
+****
+
+****
+You have to fix such conflicts manually, then commit the necessary changes, then push them.
+****
+
+// //////////////////////////////////////////////////////////////
+== Merge Conflicts
+
+.Good practice
+****
+If you think a conflict is likely:
+
+- then coordinate with your team-mates *before* making the changes.
+****
+
+// //////////////////////////////////////////////////////////////
+== Merge Conflicts
+
+.Good practice
+****
+If you think a conflict is likely:
+
+- then coordinate with your team-mates *before* making the changes.
+****
+
+****
+Ideally, you can structure your project such that you aren't both changing the same parts of the code.
+
+E.g. one person is working on the server, and one on an app.
+
+They're different parts of the code base, so conflicts are unlikely.
+****
+
+// //////////////////////////////////////////////////////////////
+== Some Git Goodies...
+
+// //////////////////////////////////////////////////////////////
+== The Stash
+
+// //////////////////////////////////////////////////////////////
+== The Stash
+
+****
+Sometimes:
+
+- You make some changes, but then realise that you're working on the wrong branch.
+
+- You're in the middle of making some changes, but then need to work on another branch. +
+  But you're not yet ready to commit your changes.
+****
+
+****
+So:
+
+- you have made changes,
+- but you can't commit them.
+****
+
+// //////////////////////////////////////////////////////////////
+== The Stash
+
+----
+git stash
+----
+
+****
+This:
+
+- copies all of your uncommitted changes into the "stash"
+- leaving you at the last commit.
+****
+
+****
+You can now change branch, and do whatever work is needed.
+****
+
+// //////////////////////////////////////////////////////////////
+== The Stash
+
+----
+git stash
+----
+
+****
+This:
+
+- copies all of your uncommitted changes into the "stash"
+- leaving you at the last commit.
+****
+
+****
+Eventually, you want your changes back again...
+****
+
+// //////////////////////////////////////////////////////////////
+== The Stash
+
+----
+git stash pop
+----
+
+****
+This:
+
+- reapplies your stashed changes on top of whatever is the current branch.
+****
+
+****
+(You *do* want this as part of your tool kit.)
+****
+
+// //////////////////////////////////////////////////////////////
+== The Stash -- Example
+
+----
+git checkout master
+git pull
+
+# Make changes.
+
+# Darn!
+# I should be working on my own development branch.
+----
+
+// //////////////////////////////////////////////////////////////
+== The Stash -- Example
+
+----
+git checkout master
+git pull
+
+# Make changes.
+
+# Darn!
+# I should be working on my own development branch.
+
+git stash                    # Stash your changes.
+git checkout sblott          # Move to the correct branch.
+git pull                     # Make sure that you are up to date.
+git stash pop                # Reapply your changes.
+----
+
+// //////////////////////////////////////////////////////////////
+== The Stash
+
+****
+Probably bad practice...
+****
+
+// //////////////////////////////////////////////////////////////
+== The Stash
+
+****
+Sometimes I use the stash to just throw away changes that I think are going nowhere...
+****
+
+// //////////////////////////////////////////////////////////////
+== The Stash
+
+****
+Sometimes I use the stash to just throw away changes that I think are going nowhere...
+****
+
+----
+# Make changes.
+
+# Nah.  This is going in the wrong direction.
+----
+
+// //////////////////////////////////////////////////////////////
+== The Stash
+
+****
+Sometimes I use the stash to just throw away changes that I think are going nowhere.
+****
+
+----
+# Make changes.
+
+# Nah.  This is going in the wrong direction.
+
+git stash             # And all of my unwanted changes are gone.
+----
+
+// //////////////////////////////////////////////////////////////
+== Trying/Merging your Team Mate's Work
+
+// //////////////////////////////////////////////////////////////
+== Trying/Merging your Team Mate's Work
+
+****
+Sometimes you just want to try out your team-mate's work.
+****
+
+// //////////////////////////////////////////////////////////////
+== Trying/Merging your Team Mate's Work
+
+****
+Sometimes you just want to try out your team-mate's work.
+****
+
+----
+git pull
+git checkout origin/bloggsj45
+----
+
+****
+Now you have your team-mate's version of the project, from their branch.
+****
+
+// //////////////////////////////////////////////////////////////
+== Trying/Merging your Team Mate's Work
+
+****
+Perhaps you're not ready to merge your own work into +master+...
+
+- but you need your team-mate's work merged into your own branch.
+****
+
+// //////////////////////////////////////////////////////////////
+== Trying/Merging your Team Mate's Work
+
+****
+Perhaps you're not ready to merge your own work into +master+...
+
+- but you need your team-mate's work merged into your own branch.
+****
+
+----
+git pull                       # Make sure that you're up to date.
+git checkout sblott            # Check out your own branch.
+git merge origin/bloggsj45     # Merge your team-mate's work.
+git push
+----
+
+// //////////////////////////////////////////////////////////////
+== Trying/Merging your Team Mate's Work
+
+****
+Perhaps you're not ready to merge your own work into +master+...
+
+- but you need *just one important commit* from your team mate.
+****
+
+// //////////////////////////////////////////////////////////////
+== Trying/Merging your Team Mate's Work
+
+****
+Perhaps you're not ready to merge your own work into +master+...
+
+- but you need *just one important commit* from your team mate.
+****
+
+----
+git pull
+git checkout bloggsj45
+git log                         # Find the commit you're
+                                # looking for.
+git checkout sblott
+git cherry-pick 9ebc22df4b49bc9b50b63b90cede57bed8e97726
+git push
+----
+
+// //////////////////////////////////////////////////////////////
+== Under (almost) No Circumstances...
+
+// //////////////////////////////////////////////////////////////
+== Under (almost) No Circumstances
+
+****
+Help:
+
+- Something is wrong.
+- I can't get git to do what I want.
+- I'll check the internet.
+- Oh, there's +git push -f+.
+
+The "+-f+" stands for "force".
+****
+
+// //////////////////////////////////////////////////////////////
+== Under (almost) No Circumstances
+
+****
+Help:
+
+- Something is wrong.
+- I can't get git to do what I want.
+- I'll check the internet.
+- Oh, there's +git push -f+.
+****
+
+****
+This wholly overwrites a sequence of commits, deleting what was there before.
+****
+
+// //////////////////////////////////////////////////////////////
+== Under (almost) No Circumstances
+
+****
+Help:
+
+- Something is wrong.
+- I can't get git to do what I want.
+- I'll check the internet.
+- Oh, there's +git push -f+.
+****
+
+****
+It is *nearly always wrong*.
+
+It can create *big* problems for your team-mate.
+
+It can even create situations which are *unrecoverable*.
+****
+
+// //////////////////////////////////////////////////////////////
+== Good Practice
+
+****
+- Keep change sets small, if you can.
+- If you can +commit+, do +commit+.
+- If you can +merge+, do +merge+.
+- Keep +master+ clean.
+- Always +pull+ and +merge+ to keep yourself up to date.
+- Never let commits sit locally or unmerged for long.
+- Coordinate with your partner if you think a conflict is likely.
+****
+
+// //////////////////////////////////////////////////////////////
+== Continuous Integration
+
+****
+GitLab provides a continuous integration (CI) and deployment framework.
+****
+
+****
+This allows you, for example, to automate testing and deployment.
+****
+
+// //////////////////////////////////////////////////////////////
+== Continuous Integration
+
+****
+In the root directory of your project, create a file: "+.gitlab-ci.yml+".
+
+The format is https://en.wikipedia.org/wiki/YAML[YAML].
+****
+
+.Example
+----
+test:
+  script:
+    - "make build"
+    - "make test"
+----
+
+// //////////////////////////////////////////////////////////////
+== Continuous Integration
+
+****
+See the
+https://gitlab.computing.dcu.ie/sblott/test-project-addition/-/jobs[jobs] list.
+****
+
+// //////////////////////////////////////////////////////////////
+== Done
+
+////
+//vim: ft=asciidoc
+//////
+//

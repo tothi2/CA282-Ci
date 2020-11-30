@@ -1,0 +1,1008 @@
+= Git
+Stephen Blott <stephen.blott@dcu.ie>
+:data-uri:
+:theme: smblott
+
+// //////////////////////////////////////////////////////////////
+== Git
+
+****
+Git is:
+
+- a source-code control system, and
+- a version control system
+****
+
+// //////////////////////////////////////////////////////////////
+== Software Projects
+
+****
+Most software projects consist of:
+
+- a (possibly large) collection of files, mostly text files.
+****
+
+****
+For example,
+
+- the source code for the Python interpreter consists of a collection of almost _four thousand_  files.
+****
+
+// //////////////////////////////////////////////////////////////
+== Software Projects
+
+****
+Most software is written by _many_ contributors.
+****
+
+****
+For example:
+
+- the Python interpreter has hundreds of contributors.
+****
+
+// //////////////////////////////////////////////////////////////
+== Software Projects
+
+****
+At any point in time, developers will be working on _many different_ features:
+
+- new features in development
+- experimental releases
+- security patches
+- bug fixes
+- and so on...
+****
+
+// //////////////////////////////////////////////////////////////
+== Software Projects
+
+****
+At any point in time, developers will be working on _many different_ features:
+
+- new features in development
+- experimental releases
+- security patches
+- bug fixes
+- and so on...
+****
+
+****
+And each feature requires changes to a _different set of files_.
+****
+
+// //////////////////////////////////////////////////////////////
+== Software Projects
+
+.These files have been changed by one developer:
+----
+--------   --------   --------   --------   --------   --------
+|      |   |      |   |      |   |      |   |      |   |      |
+| **   |   |      |   |      |   |      |   |  *   |   |      |
+|      |   |      |   |      |   |   ** |   |      |   |      |
+|      |   |      |   |      |   |      |   |      |   |      |
+|   *  |   |      |   |      |   |      |   |      |   |  *** |
+|      |   |      |   |      |   | **** |   |      |   |      |
+--------   --------   --------   --------   --------   --------
+----
+
+// //////////////////////////////////////////////////////////////
+== Software Projects
+
+.These by another:
+----
+--------   --------   --------   --------   --------   --------
+|      |   |      |   |      |   |      |   |      |   |      |
+|      |   |      |   |      |   |      |   |      |   |      |
+|      |   | ++   |   | ++   |   |    + |   |      |   |      |
+|      |   |      |   |      |   | ++   |   |      |   |      |
+|   +  |   |      |   |      |   |      |   |      |   |      |
+|      |   |      |   |      |   |      |   |      |   |      |
+--------   --------   --------   --------   --------   --------
+----
+
+// //////////////////////////////////////////////////////////////
+== Software Projects
+
+.And these by yet another:
+----
+--------   --------   --------   --------              --------
+|      |   |      |   |      |   | ===  |              |      |
+| ==   |   |      |   |      |   |      |              |      |
+|      |   |      |   |      |   |    = |              |      |
+|      |   |      |   |      |   |      |              |      |
+|   =  |   |   == |   |      |   |      |              | ===  |
+|      |   |      |   |      |   |      |              |      |
+--------   --------   --------   --------              --------
+----
+
+// //////////////////////////////////////////////////////////////
+== Potential Problems
+
+// //////////////////////////////////////////////////////////////
+== Potential Problems
+
+.Copying change sets
+****
+When one contributor makes a set of changes,
+we need a mechanism for copying those changes to other developers.
+****
+
+****
+For collaboration, for testing, for deployment, ...
+****
+
+// //////////////////////////////////////////////////////////////
+== Potential Problems
+
+.Atomic change sets
+****
+A change set usually involves changes to _several different files_.
+
+We should always see the state either _before_ all of the changes, or _after_ all of the changes.
+****
+
+****
+We should never see a set of files with *some of the changes applied*, but not others.
+****
+
+// //////////////////////////////////////////////////////////////
+== Potential Problems
+
+.Merging change sets
+****
+Developers often make changes to the _same files_ at the _same time_.
+
+We need a mechanism for _merging those changes_, ideally automatically.
+****
+
+// //////////////////////////////////////////////////////////////
+== Potential Problems
+
+.Multiple versions
+****
+Individual developers work on different features at the same time, each being
+a _different version_ of the code base.
+****
+
+****
+For example:
+
+- new feature A
+- new feature B
+- bug fix version
+- test version from a different developer
+- canary version
+****
+
+// //////////////////////////////////////////////////////////////
+== Potential Problems
+
+.Multiple dev systems
+****
+Individual developers work on different computers:
+
+- a desktop at work, a laptop at home, ...
+
+Changes must be propagated between these systems.
+****
+
+// //////////////////////////////////////////////////////////////
+== Source-Code Control Systems
+
+****
+Source-code control systems:
+
+- manage (possibly large) sets of files
+- manage multiple versions of those files
+- usually distributed +
+- historical: RCS, CVS, ...
+- current: git, subversion, mercurial, ...
+****
+
+// //////////////////////////////////////////////////////////////
+== Git
+
+****
+Git is a _source code control system_ and a _version control system_.
+****
+
+// //////////////////////////////////////////////////////////////
+== Git
+
+****
+Git manages:
+
+- private/proprietary/commercial software projects
+- open-source software projects
+- personal projects
+- or just your own Linux config files and scripts
+****
+
+****
+Or, if you happen to be a lecturer, then all of your lecture material.
+****
+
+// // //////////////////////////////////////////////////////////////
+// == Git
+//
+// ****
+// Git can be used to manage:
+//
+// - private/proprietary/commercial software projects
+// - open-source software projects
+// - or just your own files +
+//   (for example, your own Linux configuration files and scripts)
+// ****
+//
+// ****
+// All of my lecture material lives in git.
+//
+// That includes my Einstein markers, my slides, the lab sheets, the web
+// site (and more) -- if you know my modules.
+// ****
+
+// //////////////////////////////////////////////////////////////
+== Git-Based Web sites
+
+****
+Web sites like https://github.com/[Github] and https://bitbucket.org/[Bitbucket] provide free hosting of git repositories (and more).
+
+(I think these sites offer free, *private* repos for students.)
+****
+
+****
+For SoC students, we host a https://gitlab.computing.dcu.ie/[Gitlab] instance.
+
+(Use the login credentials that you use in the labs.)
+****
+
+// //////////////////////////////////////////////////////////////
+== Git
+
+****
+Why should you care?
+****
+
+// //////////////////////////////////////////////////////////////
+== Git
+
+****
+Why should you care?
+****
+
+****
+For CA students:
+
+- you *will* be using git in third and fourth year for your projects.
+****
+
+// //////////////////////////////////////////////////////////////
+== Git
+
+****
+Why should you care?
+****
+
+****
+For most students:
+
+- you *will* encounter git (or something like it) on your INTRA placement.
+****
+
+// //////////////////////////////////////////////////////////////
+== Git
+
+****
+Why should you care?
+****
+
+****
+For some students:
+
+- you might want to contribute to open-source projects, or create your own.
+****
+
+// //////////////////////////////////////////////////////////////
+== Git
+
+****
+Why should you care?
+****
+
+****
+"Github is the new CV."
+****
+
+// //////////////////////////////////////////////////////////////
+== Git
+
+****
+Why should you care?
+****
+
+****
+For most students:
+
+- git is a great place to store all of your module work +
+  (e.g. all of your Python files).
+****
+
+// //////////////////////////////////////////////////////////////
+== Repositories
+
+// //////////////////////////////////////////////////////////////
+== Repositories
+
+****
+In git terminology:
+
+- a git project is known as a _repository_,
+- or _repo_ for short.
+****
+
+****
+A repo contains:
+
+- all of a project's files,
+- all _versions_ of those files,
+- and all _historical versions_ of those files.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+****
+A _change set_ is a set of changes to a set of files:
+
+- edits
+- new files
+- removed files
+- renamed files
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+****
+A _change set_ is a set of changes to a set of files:
+
+- edits
+- new files
+- removed files
+- renamed files
+****
+
+****
+A repo consists of a _sequence_ of change sets.
+
+And that sequence of change sets defines the current state of a project's files.
+
+(Simplified.)
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+****
+A _change set_ is a set of changes to a set of files:
+
+- edits
+- new files
+- removed files
+- renamed files
+****
+
+****
+Change sets are bundled into what is called a _commit_.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets (Example)
+
+// //////////////////////////////////////////////////////////////
+== Change Sets (Example)
+
+****
+Create a file +test.txt+ containing the following text...
+****
+
+----
+its fleece was white as coal.
+Nobody expects the Spanish Inquisition!
+the dog was sure to go.
+And everywhere that John went,
+----
+
+****
+Commit.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets (Example)
+
+****
+Change the word +dog+ to +lamb+.
+****
+
+****
+Commit.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets (Example)
+
+****
+Swap the order of the last two lines.
+****
+
+****
+Commit.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets (Example)
+
+****
+Delete line 2.
+
+Add a new first line...
+****
+
+----
+John had a little lamb,
+----
+
+****
+Commit.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets (Example)
+
+****
+Rename file to +mary.txt+.
+****
+
+****
+Commit.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets (Example)
+
+****
+Change every occurrence of +John+ to +Mary+.
+
+Change every occurrence of +coal+ to +snow+.
+****
+
+****
+Commit.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets (Example)
+
+****
+Applying each of these changes in turn, we end up with a file +mary.txt+ containing:
+
+----
+Mary had a little lamb,
+its fleece was white as snow.
+And everywhere that Mary went,
+the lamb was sure to go.
+----
+****
+
+****
+The *sequence of changes* (change sets, or commits) define the final state of the file.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty)
+----
+
+.System 2
+----
+# (empty)
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1
+----
+
+.System 2
+----
+# (empty)
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2
+----
+
+.System 2
+----
+# (empty)
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3
+----
+
+.System 2
+----
+# (empty)
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3
+----
+
+.System 2
+----
+# (empty)
+----
+
+****
+The changes described by these three commits transform an empty project to the current project state.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3
+----
+
+.System 2
+----
+# (empty)
+----
+
+****
+And we can copy the commits to a different system...
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3
+----
+
+.System 2
+----
+# (empty) c1 c2 c3
+----
+
+****
+And we get an exact copy of the current project state.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3
+----
+
+.System 2
+----
+# (empty) c1 c2 c3
+----
+
+****
+We make more changes...
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+****
+And, eventually, copy these changes back to System 1...
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+****
+And, eventually, copy these changes back to System 1.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+****
+The project state is now identical on both systems.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+****
+A git-managed project is defined:
+
+- not by the state of the files,
+- but rather by the _sequence of commits_ which generates those files.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+****
+We can clone the project on a new system...
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 3
+----
+# (empty)
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 3
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 3
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+****
+And we have a new complete copy of the project files.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 3
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+****
+And so on...
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 3
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 c8
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 3
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 c8 c9
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 3
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 c8 c9 c10
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 c8 c9 c10
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7
+----
+
+.System 3
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 c8 c9 c10
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 c8 c9 c10
+----
+
+.System 2
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 c8 c9 c10
+----
+
+.System 3
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 c8 c9 c10
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 c8 c9 c10
+----
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 c8 c9 c10
+----
+
+****
+Time travel.
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 | c6 c7 c8 c9 c10
+----
+
+****
+We can go back to any previous version of the project:
+
+- retrieve deleted code
+- locate which commit introduced a bug (bisect).
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.System 1
+----
+# (empty) c1 c2 c3 c4 c5 c6 c7 | c8 c9 c10
+----
+
+****
+We can go back to any previous version of the project:
+
+- retrieve deleted code
+- locate which commit introduced a bug (bisect).
+****
+
+// //////////////////////////////////////////////////////////////
+== Change Sets
+
+.Key point
+****
+The state of a project is defined by a sequence of commits.
+****
+
+.In git:
+****
+- we don't share files,
+- we share sequences of commits.
+****
+
+// //////////////////////////////////////////////////////////////
+== Demo
+
+****
+This is not a full tutorial on git.
+
+This is just a demo of basic git usage.
+****
+
+////
+//vim: ft=asciidoc
+//////
+//

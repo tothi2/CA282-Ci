@@ -1,0 +1,5 @@
+dummy:
+	# Some of these lines might be useful.
+	sh tests/python-test.sh
+	sh tests/coffeescript-test.sh
+	sh tests/zsh-test.sh
