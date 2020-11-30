@@ -5,6 +5,11 @@ image: "smblott/dcu-docker-gitlab-ci"
 
 # The make file (Makefile) contains two targets, "build" and run".
 #
+# Separate build and test into two jobs which run as two stages in
+# pipeline:
+#
+#   - https://docs.gitlab.com/ee/ci/yaml/#stage
+#
 run:
    script:
       - echo fix me

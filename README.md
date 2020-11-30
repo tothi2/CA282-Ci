@@ -1,6 +1,7 @@
-Here, we have four implementations of programs in various languages
-to add up the command-line arguments.
+This is the same as the "1-build-test" branch, except...
 
-Makefile contains a target "build" and a target "test".
+The make file (Makefile) actually consists of two separate stages: build and test.
 
-Adapt the GitLab CI configuration to run these build and test targets.
+Structure the GitLab CI pipeline as two separate stages:
+
+  - https://docs.gitlab.com/ee/ci/yaml/#stage
