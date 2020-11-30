@@ -1,5 +1,6 @@
-## Base project for CA282 CI
+Here, we have four implementations of programs in various languages
+to add up the command-line arguments.
 
-This is the base project for CA282 CI week.
+Makefile contains a target "build" and a target "test".
 
-The relevant material is in the various branches of this repo.
+Adapt the GitLab CI configuration to run these build and test targets.
