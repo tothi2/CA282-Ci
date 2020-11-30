@@ -3,101 +3,22 @@
 #
 image: "smblott/dcu-docker-gitlab-ci"
 
-cache:
-   key: global
-   paths:
-      - add
-      - Add.class
-
-stages:
-   - lint
-   - build
-   - test
-
+# "hello" is a job name.
+#
+# "script" is a sequence of commands to execute for this job.
+#
+# The format of this file is YAML (https://yaml.org/).
+#
+# GitLab CI configuration is defined here...
+#
+#   - https://docs.gitlab.com/ee/ci/yaml/
+#
+# If you have "gitlab-runner" installed locally, then you can run
+# this job like this...
+#
+#   - gitlab-runner exec shell hello
+#   - gitlab-runner docker shell hello
+#
 hello:
-   stage: lint
-   # Here's "hello world"...
-   #
-   # Start by testing this.
    script:
       - echo hello world
-
-lint:
-   stage: lint
-   # Background: https://en.wikipedia.org/wiki/Lint_(software).
-   #
-   # Use the command "splint SOMETHING.c" to verify that the C file here (add.c)
-   # passes various security and style checks.  Better still, add "lint" as a target
-   # in the Makefile and use "make" instead.
-   #
-   # This is just a dummy script entry which is guaranteed to succeed.
-   # Replace it.
-   script:
-      - splint add.c
-
-addition-build:
-   stage: build
-   # Use the Makefile to build the C and Java implementations in the current working directory.
-   # It's the existing "build" target.
-   script:
-      - make build
-
-addition-test:
-   stage: test
-   # Use the Makefile to run the "tests".
-   #
-   # Important... This *should not* rebuild the C executable and the Java class file.  These
-   # should be kept over from the "build" stage.  This is not the default behaviour.
-   #
-   # To ensure that these are not rebuilt, look at the cache directive:
-   #
-   #    https://docs.gitlab.com/ee/ci/caching/
-   #
-   # Also consider the "cache:policy" directive (to determine how cached data migrates between
-   # stages).
-   script:
-      - make test
-
-mysql:
-   stage: test
-   variables:
-      MYSQL_DATABASE: "test"
-      MYSQL_ROOT_PASSWORD: "SeCrEt"
-   # The scripts in the bin directory test a MySQL database on a server called "mysql".
-   #
-   # Add a MySQL service image and run the four scripts (not 00-common.zsh) in the bin directory
-   # successfully.
-   #
-   # Use the image "mysql:5.7".
-   #
-   # https://docs.gitlab.com/ee/ci/yaml/#services
-   # https://docs.gitlab.com/ee/ci/services/
-   script:
-      - "true"
-
-java:
-   stage: test
-   # Run "make build" in the java directory.  This builds all of the Java class files
-   #
-   # (The "-C" option to make might prove useful.)
-   #
-   # Observe that this also builds a Java JAR file.
-   #
-   # Add that JAR file as an artifact of the build:
-   #
-   #    https://docs.gitlab.com/ee/ci/pipelines/job_artifacts.html
-   #
-   # (Please, also, set a reasonable expiry time.  We don't need these artifacts to live forever.)
-   #
-   # Note: this task didn't work correctly during the online lecture this morning.  I have fixed
-   # the Makefile in the java directory.  It works now.
-   script:
-      - "true"
-
-# Ignore this (we may come back to it in the coming weeks):
-# redis:
-#    stage: test
-#    services:
-#       - redis
-#    script:
-#       - redis-cli -h redis PING
