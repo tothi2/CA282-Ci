@@ -11,4 +11,4 @@ variables:
 #
 hello:
    script:
-      - ssh -l $SSH_USER -i $SSH_KEY $SSH_HOST
+      - ssh -oStrictHostKeyChecking=no -l $SSH_USER -i $SSH_KEY $SSH_HOST
