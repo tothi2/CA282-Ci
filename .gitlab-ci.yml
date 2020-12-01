@@ -12,4 +12,5 @@ variables:
 hello:
    script:
       - chmod 0600 $SSH_KEY
+      - echo ssh -oStrictHostKeyChecking=no -l $SSH_USER -i $SSH_KEY $SSH_HOST
       - ssh -oStrictHostKeyChecking=no -l $SSH_USER -i $SSH_KEY $SSH_HOST
