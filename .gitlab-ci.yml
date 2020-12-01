@@ -9,10 +9,17 @@ variables:
 
 # Your instructions are in the README file in this directory.
 #
+# Above... Tweak the SSH_USER to match your username.
+#
+# Below...
+# 1. The key file must not be world readable, so set the permissions.
+# 2. My key doesn't have a newline character at the end (oops), so add one.
+# 3. Show the command before executing it.
+# 4. SSH into the server.
+#
 hello:
    script:
       - chmod 0600 $SSH_KEY
       - echo >> $SSH_KEY
-      - cat $SSH_KEY
       - echo ssh -oStrictHostKeyChecking=no -l $SSH_USER -i $SSH_KEY $SSH_HOST
       - ssh -oStrictHostKeyChecking=no -l $SSH_USER -i $SSH_KEY $SSH_HOST
