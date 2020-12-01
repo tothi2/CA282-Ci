@@ -3,25 +3,12 @@
 #
 image: "smblott/dcu-docker-gitlab-ci"
 
-# "hello" is a job name.
-#
-# "script" is a sequence of commands to execute for this job.
-#
-# The format of this file is YAML (https://yaml.org/).
-#
-# GitLab CI configuration is defined here...
-#
-#   - https://docs.gitlab.com/ee/ci/yaml/
-#
-# If you have "gitlab-runner" installed locally, then you can run
-# this job like this...
-#
-#   - gitlab-runner exec shell hello
-#   - gitlab-runner docker shell hello
-#
-# Also, this job will be run automatically whenever you push new
-# commits back to GitLab.
+variables:
+   SSH_USER: "blott"
+   SSH_HOST: "student.computing.dcu.ie"
+
+# Your instructions are in the README file in this directory.
 #
 hello:
    script:
-      - echo hello world
+      - ssh -l $SSH_USER -i $SSH_KEY $SSH_HOST
