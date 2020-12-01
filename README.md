@@ -6,9 +6,9 @@ The relevant material is in the various branches of this repo.
 
 These branches are:
 
-- `1-build-test`
-- `2-build-test-stages`
-- `3-build-test-stages-cache`
-- `4-java-artifacts`
-- `5-mysql`
-- `6-ssh`
+- `git checkout 1-build-test`
+- `git checkout 2-build-test-stages`
+- `git checkout 3-build-test-stages-cache`
+- `git checkout 4-java-artifacts`
+- `git checkout 5-mysql`
+- `git checkout 6-ssh`
