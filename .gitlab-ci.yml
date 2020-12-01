@@ -7,6 +7,6 @@ variables:
    url: "https://www.python.org/ftp/python/3.9.0/Python-3.9.0.tgz"
    dst: "Python-3.9.0.tgz"
 
-hello:
+download:
    script:
       - zsh download.zsh $CACHE $url $dst

@@ -9,4 +9,9 @@ set -x
 
 cd $cache
 
-wget -O $name.tmp -q $url && mv -v $name.tmp $name
+if [[ -f $name ]]
+then
+   print "$cache/$name exists; skipping download."
+else
+   wget -O $name.tmp -q $url && mv -v $name.tmp $name
+fi
