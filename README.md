@@ -12,3 +12,5 @@ These branches are:
 - `git checkout 4-java-artifacts`
 - `git checkout 5-mysql`
 - `git checkout 6-ssh`
+
+(See also the `cache-demo` branch.)
