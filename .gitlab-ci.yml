@@ -3,6 +3,13 @@
 #
 image: "smblott/dcu-docker-gitlab-ci"
 
+# The MySQL service requires configuration.  These variables set the database
+# and password for the MySQL service.
+#
+variables:
+   MYSQL_DATABASE: "test"
+   MYSQL_ROOT_PASSWORD: "SeCrEt"
+
 # Your instructions are in the README file in this directory.
 #
 hello:
