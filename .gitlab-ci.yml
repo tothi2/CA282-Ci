@@ -3,8 +3,9 @@
 #
 image: "smblott/dcu-docker-gitlab-ci"
 
-# "hello" is a job name.
+# The make file (Makefile) contains two targets, "build" and run".
 #
+<<<<<<< HEAD
 # "script" is a sequence of commands to execute for this job.
 #
 # The format of this file is YAML (https://yaml.org/).
