@@ -5,6 +5,23 @@ image: "smblott/dcu-docker-gitlab-ci"
 
 # Your instructions are in the README.txt file in this directory.
 #
-run:
+
+stages:
+   - build
+   - test
+
+cache:
+   key: global
+   paths:
+      - add
+
+
+build:
+   stage: build
    script:
-      - echo fix me
+      - make build
+
+test-1:
+   stage: test
+   script:
+      - make test
