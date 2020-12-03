@@ -5,6 +5,12 @@ image: "smblott/dcu-docker-gitlab-ci"
 
 # Your instructions are in the README file in this directory.
 #
-hello:
+
+artifacts:
+   paths: build
+   expire_in: 1 week
+
+
+build:
    script:
-      - echo hello world
+      - make compile
