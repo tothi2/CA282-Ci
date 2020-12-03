@@ -9,7 +9,8 @@ image: "smblott/dcu-docker-gitlab-ci"
 
 build:
    artifacts:
-      paths: build/
+      paths:
+         - build/
       expire_in: 1 week
    script:
       - make compile
