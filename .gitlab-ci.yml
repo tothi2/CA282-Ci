@@ -6,11 +6,10 @@ image: "smblott/dcu-docker-gitlab-ci"
 # Your instructions are in the README file in this directory.
 #
 
-artifacts:
-   paths: build
-   expire_in: 1 week
-
 
 build:
+   artifacts:
+      paths: build/
+      expire_in: 1 week
    script:
       - make compile
