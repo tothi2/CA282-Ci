@@ -5,6 +5,7 @@ image: "smblott/dcu-docker-gitlab-ci"
 
 # The make file (Makefile) contains two targets, "build" and run".
 #
-run:
+build-test:
    script:
-      - echo hello
+      - make build
+      - make test
