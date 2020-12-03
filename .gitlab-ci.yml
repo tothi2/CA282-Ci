@@ -10,6 +10,19 @@ image: "smblott/dcu-docker-gitlab-ci"
 #
 #   - https://docs.gitlab.com/ee/ci/yaml/#stage
 #
-run:
+
+stages:
+   - build
+   - test
+
+
+
+build:
+   stage: build
    script:
-      - echo fix me
+      - make build
+
+test-1:
+   stage: test
+   script:
+      - make test
