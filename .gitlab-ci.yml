@@ -7,4 +7,4 @@ image: "smblott/dcu-docker-gitlab-ci"
 #
 run:
    script:
-      - echo fix me
+      - echo hello
